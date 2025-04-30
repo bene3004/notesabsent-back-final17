@@ -19,11 +19,11 @@ func main() {
 	protected := router.Group("/notes")
 	protected.Use(middleware.Auth())
 	{
-		protected.GET("/notes", controllers.GetAllNotes)
-		protected.POST("/notes", controllers.AddNote)
-		protected.GET("/notes/:nid", controllers.GetNoteByID)
-		protected.PUT("/notes/:nid", controllers.UpdateNote)
-		protected.DELETE("/notes/:nid", controllers.DeleteNote)
+		protected.GET("/", controllers.GetAllNotes)
+		protected.POST("/", controllers.AddNote)
+		protected.GET("/:nid", controllers.GetNoteByID)
+		protected.PUT("/:nid", controllers.UpdateNote)
+		protected.DELETE(":nid", controllers.DeleteNote)
 	}
 
 	router.Run(":8080")
