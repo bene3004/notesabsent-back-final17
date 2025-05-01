@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"restapi/config"
 	"restapi/controllers"
-	"restapi/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	router.POST("/login", controllers.LogIn)
 	router.GET("/validate", controllers.Validate)
 
-	protected := router.Group("/notes")
+	/*protected := router.Group("/notes")
 	protected.Use(middleware.Auth())
 	{
 		protected.GET("/", controllers.GetAllNotes)
@@ -24,7 +24,7 @@ func main() {
 		protected.GET("/:nid", controllers.GetNoteByID)
 		protected.PUT("/:nid", controllers.UpdateNote)
 		protected.DELETE(":nid", controllers.DeleteNote)
-	}
+	}*/
 
 	router.Run(":8080")
 }
