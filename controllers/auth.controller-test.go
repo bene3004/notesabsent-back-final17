@@ -43,10 +43,9 @@ func TestSignUp(t *testing.T) {
 func TestLogin(t *testing.T) {
 	config.ConnectToDatabase()
 
-	// Erstellt Benutzer (nur einmalig)
 	config.DB.Create(&models.User{
 		Username: "testuser123",
-		Password: "$2a$10$7lZ9RHDz.GOPuQSK9U3kTuxzEKYdcn4iF7fJUBmH4KbFkPbY03Zla", // bcrypt hash von "testpassword"
+		Password: "$2a$10$7lZ9RHDz.GOPuQSK9U3kTuxzEKYdcn4iF7fJUBmH4KbFkPbY03Zla",
 	})
 
 	payload := map[string]string{
