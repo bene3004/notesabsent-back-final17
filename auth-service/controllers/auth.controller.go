@@ -86,7 +86,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	// response
-	c.JSON(http.StatusOK, gin.H{"message": "login successful"})
+	c.JSON(http.StatusOK, gin.H{"message": "signup successful"})
 }
 func Validate(c *gin.Context) {
 	user, _ := c.Get("user")

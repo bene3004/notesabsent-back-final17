@@ -2,37 +2,14 @@ package controllers
 
 import (
 	"net/http"
-	"os"
 	"restapi/config"
 	"restapi/models"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-resty/resty/v2"
 )
 
 func GetAllNotes(c *gin.Context) {
-	token, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	authURL := os.Getenv("AUTH_SERVICE_URL")
-	if authURL == "" {
-		authURL = "http://localhost:8080/validate"
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetHeader("Cookie", "authorization="+token).
-		Get(authURL)
-
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	page := c.DefaultQuery("page", "1")
 	limit := c.DefaultQuery("limit", "5")
 
@@ -65,27 +42,6 @@ func GetAllNotes(c *gin.Context) {
 }
 
 func GetNoteByID(c *gin.Context) {
-	token, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	authURL := os.Getenv("AUTH_SERVICE_URL")
-	if authURL == "" {
-		authURL = "http://localhost:8080/validate"
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetHeader("Cookie", "authorization="+token).
-		Get(authURL)
-
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	nid := c.Param("nid")
 	var note models.Note
 
@@ -98,27 +54,6 @@ func GetNoteByID(c *gin.Context) {
 }
 
 func AddNote(c *gin.Context) {
-	token, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	authURL := os.Getenv("AUTH_SERVICE_URL")
-	if authURL == "" {
-		authURL = "http://localhost:8080/validate"
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetHeader("Cookie", "authorization="+token).
-		Get(authURL)
-
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	var note models.Note
 	if err := c.ShouldBindJSON(&note); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
@@ -134,27 +69,6 @@ func AddNote(c *gin.Context) {
 }
 
 func UpdateNote(c *gin.Context) {
-	token, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	authURL := os.Getenv("AUTH_SERVICE_URL")
-	if authURL == "" {
-		authURL = "http://localhost:8080/validate"
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetHeader("Cookie", "authorization="+token).
-		Get(authURL)
-
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	nid := c.Param("nid")
 	var note models.Note
 
@@ -181,27 +95,6 @@ func UpdateNote(c *gin.Context) {
 }
 
 func DeleteNote(c *gin.Context) {
-	token, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	authURL := os.Getenv("AUTH_SERVICE_URL")
-	if authURL == "" {
-		authURL = "http://localhost:8080/validate"
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetHeader("Cookie", "authorization="+token).
-		Get(authURL)
-
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	nid := c.Param("nid")
 	var note models.Note
 
