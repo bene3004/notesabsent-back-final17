@@ -98,7 +98,7 @@ func DeleteNote(c *gin.Context) {
 	id := c.Param("id")
 	var note models.Note
 
-	if err := config.DB.First(&note, "nid = ?", id).Error; err != nil {
+	if err := config.DB.First(&note, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "note not found"})
 		return
 	}
