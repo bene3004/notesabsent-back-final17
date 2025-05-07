@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"restapi/config"
 	"restapi/models"
 	"time"
@@ -24,7 +25,7 @@ func Auth() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected signing method")
 			}
-			return []byte("secret"), nil
+			return []byte(os.Getenv("JWT_SECRET")), nil
 		})
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {

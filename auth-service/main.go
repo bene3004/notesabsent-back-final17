@@ -3,6 +3,7 @@ package main
 import (
 	"restapi/config"
 	"restapi/controllers"
+	"restapi/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +13,11 @@ func main() {
 
 	router := gin.Default()
 
+	router.Use(middleware.DetailedLogger())
+
 	router.POST("/signup", controllers.SignUp)
 	router.POST("/login", controllers.LogIn)
+	router.GET("/refresh-token", controllers.RefreshToken)
 	router.GET("/validate", controllers.Validate)
 
 	/*protected := router.Group("/notes")
