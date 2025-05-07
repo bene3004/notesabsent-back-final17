@@ -3,7 +3,7 @@ package main
 import (
 	"restapi/config"
 	"restapi/controllers"
-	"restapi/middleware"
+	"restapi/middleware1"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,24 +13,24 @@ func main() {
 
 	router := gin.Default()
 
-	protected := router.Group("/notes")
-	protected.Use(middleware.Auth)
+	protected := router.Group("/")
+	protected.Use(middleware1.Auth1)
 	{
-		protected.GET("/", controllers.GetAllNotes)
-		protected.POST("/", controllers.AddNote)
-		protected.GET("/:id", controllers.GetNoteByID)
-		protected.PUT("/:id", controllers.UpdateNote)
-		protected.DELETE(":id", controllers.DeleteNote)
-		protected.GET("/", controllers.GetAllComments)
-		protected.POST("/", controllers.AddComment)
-		protected.GET("/:id", controllers.GetCommentByID)
-		protected.PUT("/:id", controllers.UpdateComment)
-		protected.DELETE(":id", controllers.DeleteComment)
-		protected.GET("/", controllers.GetAllStatus)
-		protected.POST("/", controllers.AddStatus)
-		protected.GET("/:id", controllers.GetStatusByID)
-		protected.PUT("/:id", controllers.UpdateStatus)
-		protected.DELETE(":id", controllers.DeleteStatus)
+		protected.GET("/notes", controllers.GetAllNotes)
+		protected.POST("/notes", controllers.AddNote)
+		protected.GET("/notes/:id", controllers.GetNoteByID)
+		protected.PUT("/notes/:id", controllers.UpdateNote)
+		protected.DELETE("/notes/:id", controllers.DeleteNote)
+		protected.GET("/comments", controllers.GetAllComments)
+		protected.POST("/comments", controllers.AddComment)
+		protected.GET("/comments/:id", controllers.GetCommentByID)
+		protected.PUT("/comments/:id", controllers.UpdateComment)
+		protected.DELETE("/comments/:id", controllers.DeleteComment)
+		protected.GET("/status", controllers.GetAllStatus)
+		protected.POST("/status", controllers.AddStatus)
+		protected.GET("/status/:id", controllers.GetStatusByID)
+		protected.PUT("/status/:id", controllers.UpdateStatus)
+		protected.DELETE("/status/:id", controllers.DeleteStatus)
 	}
 
 	router.Run(":8081")
