@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"restapi/config"
 	"restapi/controllers"
+	"restapi/middleware"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 
 	router.POST("/signup", controllers.SignUp)
 	router.POST("/login", controllers.LogIn)
-	router.GET("/validate", controllers.Validate)
+	router.GET("/validate", middleware.Auth, controllers.Validate)
 
 	router.Run(":8080")
 }
