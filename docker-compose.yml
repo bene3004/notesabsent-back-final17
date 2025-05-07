@@ -8,8 +8,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -34,6 +32,3 @@ services:
       DATABASE_URL: host=postgres user=postgres password=mysecretpassword dbname=postgres port=5432 sslmode=disable
     ports:
       - "8081:8081"
-
-volumes:
-  postgres_data:

@@ -26,16 +26,26 @@ func main() {
 		protected.GET("/:nid", controllers.GetNoteByID)
 		protected.PUT("/:nid", controllers.UpdateNote)
 		protected.DELETE(":nid", controllers.DeleteNote)
-		protected.GET("/", controllers.GetAllComments)
-		protected.POST("/", controllers.AddComment)
-		protected.GET("/:nid", controllers.GetCommentByID)
-		protected.PUT("/:nid", controllers.UpdateComment)
-		protected.DELETE(":nid", controllers.DeleteComment)
-		protected.GET("/", controllers.GetAllStatus)
-		protected.POST("/", controllers.AddStatus)
-		protected.GET("/:nid", controllers.GetStatusByID)
-		protected.PUT("/:nid", controllers.UpdateStatus)
-		protected.DELETE(":nid", controllers.DeleteStatus)
+	}
+
+	protected1 := router.Group("/comments")
+	protected1.Use(middleware.Auth())
+	{
+		protected1.GET("/", controllers.GetAllComments)
+		protected1.POST("/", controllers.AddComment)
+		protected1.GET("/:cid", controllers.GetCommentByID)
+		protected1.PUT("/:cid", controllers.UpdateComment)
+		protected1.DELETE(":cid", controllers.DeleteComment)
+	}
+
+	protected2 := router.Group("/status")
+	protected2.Use(middleware.Auth())
+	{
+		protected2.GET("/", controllers.GetAllStatus)
+		protected2.POST("/", controllers.AddStatus)
+		protected2.GET("/:sid", controllers.GetStatusByID)
+		protected2.PUT("/:sid", controllers.UpdateStatus)
+		protected2.DELETE(":sid", controllers.DeleteStatus)
 	}
 
 	router.Run(":8081")
