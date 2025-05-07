@@ -24,7 +24,7 @@ func GetAllNotes(c *gin.Context) {
 	config.DB.Model(&models.Note{}).Count(&total)
 
 	result := config.DB.Model(&models.Note{}).
-		Select("nid, heading, description").
+		Select("id, heading, description").
 		Limit(limitInt).
 		Offset(offset).
 		Find(&notes)
@@ -42,10 +42,10 @@ func GetAllNotes(c *gin.Context) {
 }
 
 func GetNoteByID(c *gin.Context) {
-	nid := c.Param("nid")
+	id := c.Param("id")
 	var note models.Note
 
-	if err := config.DB.First(&note, "nid = ?", nid).Error; err != nil {
+	if err := config.DB.First(&note, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "note not found"})
 		return
 	}
@@ -69,10 +69,10 @@ func AddNote(c *gin.Context) {
 }
 
 func UpdateNote(c *gin.Context) {
-	nid := c.Param("nid")
+	id := c.Param("id")
 	var note models.Note
 
-	if err := config.DB.First(&note, "nid = ?", nid).Error; err != nil {
+	if err := config.DB.First(&note, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "note not found"})
 		return
 	}
@@ -95,10 +95,10 @@ func UpdateNote(c *gin.Context) {
 }
 
 func DeleteNote(c *gin.Context) {
-	nid := c.Param("nid")
+	id := c.Param("id")
 	var note models.Note
 
-	if err := config.DB.First(&note, "nid = ?", nid).Error; err != nil {
+	if err := config.DB.First(&note, "nid = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "note not found"})
 		return
 	}

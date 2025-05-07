@@ -3,8 +3,7 @@ package models
 import "gorm.io/gorm"
 
 type User struct {
-	gorm.Model `json:"-"`
-	UID        uint   `json:"uid" gorm:"primaryKey;autoIncrement"`
-	Username   string `json:"username" binding:"required"`
-	Password   string `json:"password" binding:"required"`
+	gorm.Model
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }

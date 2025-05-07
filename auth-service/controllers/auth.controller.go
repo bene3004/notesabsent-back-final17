@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"restapi/config"
@@ -28,7 +27,7 @@ func LogIn(c *gin.Context) {
 	var user models.User
 	config.DB.First(&user, "username = ?", loginInfo.Username)
 
-	if user.UID == 0 {
+	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid username or password"})
 		return
 	}
@@ -43,7 +42,7 @@ func LogIn(c *gin.Context) {
 
 	// generate jwt token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"uid": user.UID,
+		"uid": user.ID,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
 
@@ -95,63 +94,4 @@ func Validate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": user,
 	})
-}
-func RefreshToken(c *gin.Context) {
-	// Get the token from cookie
-	tokenString, err := c.Cookie("authorization")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	// Parse and validate the token
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method")
-		}
-		return []byte("secret"), nil
-	})
-
-	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	// Get user UID from token
-	uidFloat, ok := claims["uid"].(float64)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-	uid := uint(uidFloat)
-
-	// Lookup the user in DB
-	var user models.User
-	if err := config.DB.First(&user, uid).Error; err != nil || user.UID == 0 {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-
-	// Create new token
-	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"uid": user.UID,
-		"exp": time.Now().Add(24 * time.Hour).Unix(),
-	})
-
-	newTokenString, err := newToken.SignedString([]byte("secret"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
-		return
-	}
-
-	// Set new cookie
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("authorization", newTokenString, 3600*24, "/", "", false, true)
-	c.JSON(http.StatusOK, gin.H{"message": "token refreshed"})
 }

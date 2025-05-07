@@ -38,7 +38,7 @@ func Auth() gin.HandlerFunc {
 			var user models.User
 			config.DB.First(&user, claims["uid"])
 
-			if user.UID == 0 {
+			if user.ID == 0 {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			}
 

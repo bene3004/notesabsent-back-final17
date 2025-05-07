@@ -24,7 +24,7 @@ func GetAllStatus(c *gin.Context) {
 	config.DB.Model(&models.Status{}).Count(&total)
 
 	result := config.DB.Model(&models.Status{}).
-		Select("sid, heading, description").
+		Select("id, heading, description").
 		Limit(limitInt).
 		Offset(offset).
 		Find(&status)
@@ -42,10 +42,10 @@ func GetAllStatus(c *gin.Context) {
 }
 
 func GetStatusByID(c *gin.Context) {
-	sid := c.Param("sid")
+	id := c.Param("id")
 	var status models.Status
 
-	if err := config.DB.First(&status, "sid = ?", sid).Error; err != nil {
+	if err := config.DB.First(&status, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "status not found"})
 		return
 	}
@@ -69,10 +69,10 @@ func AddStatus(c *gin.Context) {
 }
 
 func UpdateStatus(c *gin.Context) {
-	sid := c.Param("sid")
+	id := c.Param("id")
 	var status models.Status
 
-	if err := config.DB.First(&status, "sid = ?", sid).Error; err != nil {
+	if err := config.DB.First(&status, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "status not found"})
 		return
 	}
@@ -95,10 +95,10 @@ func UpdateStatus(c *gin.Context) {
 }
 
 func DeleteStatus(c *gin.Context) {
-	sid := c.Param("sid")
+	id := c.Param("id")
 	var status models.Status
 
-	if err := config.DB.First(&status, "sid = ?", sid).Error; err != nil {
+	if err := config.DB.First(&status, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "status not found"})
 		return
 	}

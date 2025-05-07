@@ -24,7 +24,7 @@ func GetAllComments(c *gin.Context) {
 	config.DB.Model(&models.Comment{}).Count(&total)
 
 	result := config.DB.Model(&models.Comment{}).
-		Select("cid, heading, description").
+		Select("id, heading, description").
 		Limit(limitInt).
 		Offset(offset).
 		Find(&comments)
@@ -42,10 +42,10 @@ func GetAllComments(c *gin.Context) {
 }
 
 func GetCommentByID(c *gin.Context) {
-	cid := c.Param("cid")
+	id := c.Param("id")
 	var comment models.Comment
 
-	if err := config.DB.First(&comment, "cid = ?", cid).Error; err != nil {
+	if err := config.DB.First(&comment, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "comment not found"})
 		return
 	}
@@ -69,10 +69,10 @@ func AddComment(c *gin.Context) {
 }
 
 func UpdateComment(c *gin.Context) {
-	cid := c.Param("cid")
+	id := c.Param("id")
 	var comment models.Comment
 
-	if err := config.DB.First(&comment, "cid = ?", cid).Error; err != nil {
+	if err := config.DB.First(&comment, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "comment not found"})
 		return
 	}
@@ -95,10 +95,10 @@ func UpdateComment(c *gin.Context) {
 }
 
 func DeleteComment(c *gin.Context) {
-	cid := c.Param("cid")
+	id := c.Param("id")
 	var comment models.Comment
 
-	if err := config.DB.First(&comment, "cid = ?", cid).Error; err != nil {
+	if err := config.DB.First(&comment, "id = ?", id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "comment not found"})
 		return
 	}
