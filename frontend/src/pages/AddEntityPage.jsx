@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { addNote, addComment, addStatus } from '../api';
 import {Box, Button, Container, Heading, Input, VStack} from "@chakra-ui/react";
 import {useColorModeValue} from "../components/ui/color-mode.jsx";
 
 const AddEntityPage = () => {
     const { entity } = useParams(); // 'notes', 'comments', 'status'
+    const navigate = useNavigate();
     const [heading, setHeading] = useState('');
     const [description, setDescription] = useState('');
 
@@ -24,6 +25,7 @@ const AddEntityPage = () => {
                     await addStatus(data);
                     break;
             }
+            navigate('/');
         } catch (err) {
             console.log(err);
         }
@@ -66,3 +68,5 @@ const AddEntityPage = () => {
         </Container>
     );
 }
+
+export default AddEntityPage;

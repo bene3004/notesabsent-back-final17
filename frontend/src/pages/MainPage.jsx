@@ -1,5 +1,13 @@
-const MainPage = () => {
-    return <div>MainPage</div>;
-};
+/*
+import { Link } from 'react-router-dom';
+import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 
-export default MainPage;
+const MainPage = () => (
+    <Container maxW={"container.sm"}>
+        Welcome to Entities Collection
+        Manage Notes
+        Manage Comments
+        Manage Status
+);
+        export default MainPage;
+ */

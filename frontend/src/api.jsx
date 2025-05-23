@@ -1,34 +1,41 @@
 import axios from 'axios';
 
-const client = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
+const authClient = axios.create({
+    baseURL: import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:8080',
     withCredentials: true,
 });
 
-// authentication
-export const login = (username, password) =>
-    client.post('/login', { username, password });
-export const signup = (username, password) =>
-    client.post('/signup', { username, password });
-export const validate = () => client.get('/validate');
+const apiClient = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081',
+    withCredentials: true,
+});
 
-export const getAllNotes = (page = 1, limit = 5) =>
-    client.get('/notes', { params: { page, limit } });
-export const getNoteByID = id => client.get(`/notes/${id}`);
-export const addNote = data => client.post('/notes', data);
-export const updateNote = (id, data) => client.put(`/notes/${id}`, data);
-export const deleteNote = id => client.delete(`/notes/${id}`);
+// auth
+export const login    = (username, password) => authClient.post('/login',  { username, password });
+export const signup   = (username, password) => authClient.post('/signup', { username, password });
+export const validate = ()                     => authClient.get('/validate');
 
-export const getAllComments = (page = 1, limit = 5) =>
-    client.get('/comments', { params: { page, limit } });
-export const getCommentByID = id => client.get(`/comments/${id}`);
-export const addComment = data => client.post('/comments', data);
-export const updateComment = (id, data) => client.put(`/comments/${id}`, data);
-export const deleteComment = id => client.delete(`/comments/${id}`);
+// generic entity helpers
+const makeList    = entity => (page = 1, limit = 5) => apiClient.get(`/${entity}`, { params: { page, limit } });
+const makeById    = entity => id             => apiClient.get(`/${entity}/${id}`);
+const makeAdd     = entity => data           => apiClient.post(`/${entity}`, data);
+const makeUpdate  = entity => (id, data)     => apiClient.put(`/${entity}/${id}`, data);
+const makeDelete  = entity => id             => apiClient.delete(`/${entity}/${id}`);
 
-export const getAllStatus = (page = 1, limit = 5) =>
-    client.get('/status', { params: { page, limit } });
-export const getStatusByID = id => client.get(`/status/${id}`);
-export const addStatus = data => client.post('/status', data);
-export const updateStatus = (id, data) => client.put(`/status/${id}`, data);
-export const deleteStatus = id => client.delete(`/status/${id}`);
+export const getAllNotes     = makeList('notes');
+export const getNoteByID     = makeById('notes');
+export const addNote         = makeAdd('notes');
+export const updateNote      = makeUpdate('notes');
+export const deleteNote      = makeDelete('notes');
+
+export const getAllComments  = makeList('comments');
+export const getCommentByID  = makeById('comments');
+export const addComment      = makeAdd('comments');
+export const updateComment   = makeUpdate('comments');
+export const deleteComment   = makeDelete('comments');
+
+export const getAllStatus    = makeList('status');
+export const getStatusByID   = makeById('status');
+export const addStatus       = makeAdd('status');
+export const updateStatus    = makeUpdate('status');
+export const deleteStatus    = makeDelete('status');

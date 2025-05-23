@@ -1,18 +1,17 @@
 import { useState } from 'react';
-import { login } from '../api.jsx'
-import {Box, Button, Container, Heading, Input, VStack} from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom';
+import { signup } from '../api.jsx';
+import { Box, Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-const LogInPage = () => {
+const SignUpPage = () => {
     const [form, setForm] = useState({ username: '', password: '' });
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            await login(form.username, form.password);
-            localStorage.setItem('token', 'true');
-            navigate('/');
+            await signup(form.username, form.password);
+            navigate('/login');
         } catch (err) {
             console.error(err);
         }
@@ -21,7 +20,7 @@ const LogInPage = () => {
     return (
         <Container maxW={"container.sm"}>
             <VStack spacing={8}>
-                <Heading>Log In</Heading>
+                <Heading>Sign Up</Heading>
                 <Box w={"full"} p={6} rounded={"lg"} boxShadow={"md"}>
                     <VStack spacing={4}>
                         <Input
@@ -37,8 +36,8 @@ const LogInPage = () => {
                             value={form.password}
                             onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}
                         />
-                        <Button colorScheme="blue" onClick={handleLogin} w={"full"}>
-                            Log In
+                        <Button colorScheme="green" onClick={handleSignUp} w={"full"}>
+                            Sign Up
                         </Button>
                     </VStack>
                 </Box>
@@ -47,4 +46,4 @@ const LogInPage = () => {
     );
 };
 
-export default LogInPage;
+export default SignUpPage;
