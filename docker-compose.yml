@@ -30,3 +30,9 @@ services:
       DATABASE_URL: host=postgres user=postgres password=mysecretpassword dbname=postgres port=5432 sslmode=disable
     ports:
       - "8081:8081"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4001:4001"

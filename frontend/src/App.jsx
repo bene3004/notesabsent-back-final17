@@ -1,30 +1,55 @@
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './components/ui/navbar.jsx';
-import MainPage from './pages/MainPage.jsx';
 import LogInPage from './pages/LogInPage.jsx';
-import SignUpPage from './pages/SignUpPage.jsx';
-import GetAllEntitiesPage    from './pages/GetAllEntitiesPage.jsx';
-import GetEntityByIDPage     from './pages/GetEntityByIDPage.jsx';
-import AddEntityPage         from './pages/AddEntityPage.jsx';
-import UpdateEntityPage      from './pages/UpdateEntityPage.jsx';
-import DeleteEntityPage      from './pages/DeleteEntityPage.jsx';
+import NotePage from './pages/NotePage.jsx';
+import axios from 'axios';
 
-function App() {
+const AUTH_VALIDATE_URL = 'http://localhost:8080/validate'
+
+export default function App() {
+    const [isAuth, setIsAuth] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios
+            .get(AUTH_VALIDATE_URL, { withCredentials: true })
+            .then(() => setIsAuth(true))
+            .catch(() => setIsAuth(false));
+    }, []);
+
+    const handleAuthSuccess = () => {
+        setIsAuth(true);
+        navigate('/notes');
+    };
+
+    const handleAuthLogout = () => {
+        setIsAuth(false);
+        navigate('/login');
+    };
+
     return (
         <>
-            <Navbar />
+            <Navbar onLogout={handleAuthLogout}/>
             <Routes>
-                <Route path="/"                    element={<MainPage />} />
-                <Route path="/login"               element={<LogInPage />} />
-                <Route path="/signup"              element={<SignUpPage />} />
-                <Route path="/:entity"             element={<GetAllEntitiesPage />} />
-                <Route path="/:entity/add"         element={<AddEntityPage />} />
-                <Route path="/:entity/:id"         element={<GetEntityByIDPage />} />
-                <Route path="/:entity/:id/edit"    element={<UpdateEntityPage />} />
-                <Route path="/:entity/:id/delete"  element={<DeleteEntityPage />} />
+                <Route
+                    path="/login"
+                    element={
+                        isAuth
+                            ? <Navigate to="/notes" replace />
+                            : <LogInPage onAuthSuccess={handleAuthSuccess} />
+                    }
+                />
+
+                <Route
+                    path="/notes"
+                    element={
+                        isAuth
+                            ? <NotePage />
+                            : <Navigate to="/login" replace />
+                    }
+                />
             </Routes>
         </>
     );
 }
-
-export default App;
