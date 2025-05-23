@@ -3,11 +3,11 @@ import {
     Flex,
     Text,
     HStack,
-    Button,
+    Button
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusSquareIcon } from '@chakra-ui/icons';
-import { ColorModeButton} from './color-mode.jsx';
+import { ColorModeButton} from 'frontend/src/components/ui/color-mode.jsx';
 import { useState, useEffect } from 'react';
 import { Logger } from '../../logger.js';
 

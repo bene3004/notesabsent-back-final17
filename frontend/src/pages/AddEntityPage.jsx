@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import { addNote, addComment, addStatus } from '../api';
-import {Box, Button, Container, Heading, Input, VStack} from "@chakra-ui/react";
-import {useColorModeValue} from "../components/ui/color-mode.jsx";
+import { addNote, addComment, addStatus } from '../api.jsx';
+import {Box, Button, Container, Heading, Input, VStack} from '@chakra-ui/react';
+import {useColorModeValue} from "frontend/src/components/ui/color-mode.jsx";
 
 const AddEntityPage = () => {
     const { entity } = useParams(); // 'notes', 'comments', 'status'
