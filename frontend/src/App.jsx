@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import Navbar from './components/ui/navbar.jsx';
 import LogInPage from './pages/LogInPage.jsx';
 import NotePage from './pages/NotePage.jsx';
 import axios from 'axios';
@@ -23,14 +22,8 @@ export default function App() {
         navigate('/notes');
     };
 
-    const handleAuthLogout = () => {
-        setIsAuth(false);
-        navigate('/login');
-    };
-
     return (
         <>
-            <Navbar onLogout={handleAuthLogout}/>
             <Routes>
                 <Route
                     path="/login"
