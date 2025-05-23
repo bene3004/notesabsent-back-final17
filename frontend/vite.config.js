@@ -8,9 +8,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4001,
     proxy: {
-      '/api': {
-        target: 'http://localhost:4001',
-      },
+      '/auth': {target: 'http://localhost:8080', changeOrigin: true},
+      '/notes': {target: 'http://localhost:8081', changeOrigin: true},
     },
   },
 });
